@@ -1,4 +1,4 @@
-package dbtLab3;
+
 
 /**
  * MovieBooking is the main class for the movie ticket booking 

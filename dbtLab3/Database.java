@@ -1,4 +1,3 @@
-package dbtLab3;
 
 import java.sql.*;
 import java.util.*;
@@ -55,12 +54,30 @@ public class Database {
 
     /**
      * Check if the connection to the database has been established
-     * 
+     *
      * @return true if the connection has been established
      */
     public boolean isConnected() {
+
         return conn != null;
     }
 
-    /* --- insert own code here --- */
+    public boolean userExist(String userId) {
+
+        try {
+            Statement stmt = conn.createStatement();
+            String sql = "SELECT userId\n" +
+                    "FROM users \n" +
+                    "where username = userId";
+            if (stmt.executeQuery(sql) == null) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 }
+
+

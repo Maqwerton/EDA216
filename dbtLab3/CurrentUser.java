@@ -1,4 +1,4 @@
-package dbtLab3;
+
 
 /**
  * CurrentUser represents the current user that has logged on to
@@ -20,6 +20,7 @@ public class CurrentUser {
      * Create a CurrentUser object.
      */
     private CurrentUser() {
+
         currentUserId = null;
     }
         
@@ -40,6 +41,7 @@ public class CurrentUser {
      * @return true if a user has logged in, false otherwise.
      */
     public boolean isLoggedIn() {
+
         return currentUserId != null;
     }
         
