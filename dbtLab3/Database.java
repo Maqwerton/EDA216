@@ -59,7 +59,6 @@ public class Database {
      * @return true if the connection has been established
      */
     public boolean isConnected() {
-
         return conn != null;
     }
 
@@ -68,8 +67,8 @@ public class Database {
         List<Movie> result = new LinkedList<>();
         try {
             String sql =
-                "SELECT title\n" +
-                "FROM   Movie";
+                "SELECT movie_name\n" +
+                "FROM movies";
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
@@ -83,19 +82,17 @@ public class Database {
         return result;
         }
     
-    public List<User> getUser(String username)    {
+    public User getUser(String username)    {
         try {
             String sql =
                 "SELECT username\n" +
                 "FROM users\n" +
-                "WHERE username= ?";
+                "WHERE username=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
-            while (rs.next())   {
-                result.add(new User(rs));
-            }
-            return ;
+            User user = new User(rs);
+            return user;
         } catch(SQLException e) {
             e.printStackTrace();
         } finally {
@@ -103,13 +100,32 @@ public class Database {
         return null;
         }
 
+    public User userExist(String username)    {
+        try {
+            String sql =
+                        "SELECT username\n" +
+                        "FROM users\n" +
+                        "WHERE username=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            User user = new User(rs);
+            return user;
+        } catch(SQLException e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return null;
+    }
+
+
     public List<Performance> getPerformances(String movie) {
         List<Performance> result = new LinkedList<>();
         try {
             String sql =
-                "SELECT id, theater, movie\n" +
-                "FROM   MoviePreformance \n" +
-                "WHERE title = ?";
+                "SELECT id, theater, movie, play_date, availableSeats\n" +
+                "FROM  performances\n" +
+                "WHERE movie=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, movie);
             ResultSet rs = ps.executeQuery();
@@ -121,6 +137,25 @@ public class Database {
             e.printStackTrace();
         } finally {
          }
+        return result;
+    }
+
+    public Performance getPerformance(String movie, String date) {
+        Performance result = null;
+        try {
+            String sql =
+                    "SELECT id, theater, movie, play_date, availableSeats\n" +
+                            "FROM  performances\n" +
+                            "WHERE movie=? and play_date=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, movie);
+            ps.setString(2, date);
+            ResultSet rs = ps.executeQuery();
+            result = new Performance(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+        }
         return result;
     }
 
@@ -188,13 +223,13 @@ class User {
 
 class Performance   {
     public final int id;
-    public final String movie, theater, date, availableSeats;
+    public final String movie, theater, play_date, availableSeats;
     
     public Performance(ResultSet rs) throws SQLException {
         this.id = rs.getInt("id");
         this.movie = rs.getString("movie");
         this.theater = rs.getString("theater");
-        this.date = rs.getString("location");
+        this.play_date = rs.getString("play_date");
         this.availableSeats = rs.getString("availableSeats");
         
     }   

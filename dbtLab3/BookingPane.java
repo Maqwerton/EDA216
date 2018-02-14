@@ -1,5 +1,7 @@
 
 
+import sun.misc.Perf;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
@@ -173,16 +175,24 @@ public class BookingPane extends BasicPane {
      */
     private void fillNameList() {
         nameListModel.removeAllElements();
-        /* --- insert own code here --- */
+
+        for (Movie movie : db.getMovies())    {
+            System.out.println(movie.movieName);
+            nameListModel.addElement(movie.movieName);
+        }
     }
 
     /**
      * Fetch performance dates from the database and display them in the date
      * list.
      */
-    private void fillDateList() {
+    private void fillDateList(String movie) {
         dateListModel.removeAllElements();
         /* --- insert own code here --- */
+
+        for(Performance perf : db.getPerformances(movie)){
+            dateListModel.addElement(perf.play_date);
+        }
     }
 
     /**
@@ -211,7 +221,7 @@ public class BookingPane extends BasicPane {
                 return;
             }
             String movieName = nameList.getSelectedValue();
-            /* --- insert own code here --- */
+            fillDateList(movieName);
         }
     }
 
@@ -234,6 +244,16 @@ public class BookingPane extends BasicPane {
             String movieName = nameList.getSelectedValue();
             String date = dateList.getSelectedValue();
             /* --- insert own code here --- */
+
+            Performance perf = db.getPerformance(movieName, date);
+            fields[0].setText(perf.movie);
+            fields[1].setText(perf.play_date);
+            fields[2].setText(perf.theater);
+            fields[3].setText(perf.availableSeats);
+
+            ;
+
+
         }
     }
 

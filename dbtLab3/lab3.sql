@@ -26,8 +26,8 @@ CREATE TABLE performances (
   id              INTEGER PRIMARY KEY,
   movie           varchar(255) not null,
   theater         varchar(20) not null,
+  play_date       varchar(20),
   availableSeats  INTEGER,
-  date            varchar(20),
   foreign key     (movie) REFERENCES movies(movie_name),
   foreign key     (theater) REFERENCES theaters(theater_name)
 );
@@ -90,27 +90,27 @@ INTO theaters
 VALUES ("Martins rum", "The best road ever", 100);
 
 INSERT 
-INTO performances(movie, theater, availableSeats, date)
+INTO performances(movie, theater, availableSeats, play_date)
 VALUES ("hejsan", "Robins rum", 200, "180102");
 
 INSERT 
-INTO performances(movie, theater, availableSeats, date)
+INTO performances(movie, theater, availableSeats, play_date)
 VALUES ("ibland", "Robins rum", 200, "180102");
 
 INSERT 
-INTO performances(movie, theater, availableSeats, date)
+INTO performances(movie, theater, availableSeats, play_date)
 VALUES ("söt", "Robins rum", 200, "180103");
 
 INSERT 
-INTO performances(movie, theater, availableSeats, date)
+INTO performances(movie, theater, availableSeats, play_date)
 VALUES (",", "Robins rum", 200, "180103");
 
 INSERT 
-INTO performances(movie, theater, availableSeats, date)
+INTO performances(movie, theater, availableSeats, play_date)
 VALUES ("du", "Martins rum", 100, "180103");
 
 INSERT 
-INTO performances(movie, theater, availableSeats, date)
+INTO performances(movie, theater, availableSeats, play_date)
 VALUES ("hejsan", "Martins rum", 100, "180102");
 
 INSERT

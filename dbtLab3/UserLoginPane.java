@@ -83,7 +83,7 @@ public class UserLoginPane extends BasicPane {
          */
         public void actionPerformed(ActionEvent e) {
             String username = fields[USER_ID].getText();
-            if(db.getUser(username) != null)  {
+            if(db.userExist(username) != null)  {
                 CurrentUser.instance().loginAs(username);
             }
         }
