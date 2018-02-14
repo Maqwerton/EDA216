@@ -1,5 +1,6 @@
 
 
+
 /**
  * CurrentUser represents the current user that has logged on to
  * the movie booking system. It is a singleton class.

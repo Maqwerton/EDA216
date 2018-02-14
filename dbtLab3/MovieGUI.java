@@ -1,5 +1,6 @@
 
 
+
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -56,7 +57,7 @@ public class MovieGUI {
                 
         /* --- change code here --- */
         /* --- change xxx to the name of the file with your database --- */
-        if (db.openConnection("xxx")) {
+        if (db.openConnection("movies.sqlt")) {
             userLoginPane.displayMessage("Connected to database");
         } else {
             userLoginPane.displayMessage("Could not connect to database");

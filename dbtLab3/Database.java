@@ -1,4 +1,5 @@
 
+
 import java.sql.*;
 import java.util.*;
 
@@ -77,6 +78,120 @@ public class Database {
         }
         return true;
     }
+
+    public List<Movie> getMovies() {
+        List<Movie> found = new LinkedList<>();
+        try {
+            String sql =
+                "SELECT title\n" +
+                "FROM   Movie";
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                found.add(new Movie(rs));
+            }
+            return found;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return found;
+        }
+    
+    public List<User> getUsers()    {
+        List<Users> found = new LinkedList<>();
+        try {
+            String sql =
+                "SELECT username\n" +
+                "FROM users"
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next())   {
+                found.add(new User(rs));
+            }
+            return found;
+        } catch(SQLException e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return found;
+        }
+    }
+
+    public List<MoviePerformance> getPeformances(String movie) {
+        List<MoviePreformance> found = new LinkedList<>();
+        try {
+            String sql =
+                "SELECT id, theater, movie\n" +
+                "FROM   MoviePreformance \n" +
+                "WHERE title = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, movie);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                found.add(new MoviePerformance(rs));
+            }
+            return found;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // code to clone our Statement...
+         }
+        return found;
+    }
+
+class Movie {
+    public final String movieName;
+
+    public Movie(ResultSet rs) throws SQLException {
+        this.title = rs.getString("movie_name");
+    }
+
+class Theater {
+    public final String theaterName, address;
+    public final int seats;
+
+    Public Theater(ResultSet rs) throws SQLException {
+        this.theaterName = rs.getString("theater_name");
+        this.address = rs.getString("address");
+        this.seats = rs.getString("seats");
+    }
+}
+
+class User {
+    public final String username, address, phone;
+
+    Public User(ResultSet rs) throws SQLException {
+        this.username = username;
+        this.address = address;
+        this.phone = phone;
+    }
+}
+
+class Performance   {
+    public final int id;
+    public final String location, movie, theater;
+    
+    Public Performance(ResultSet rs) throws SQLException {
+        this.id = rs.getInt("id");
+        this.location = rs.getString("location");
+        this.movie = rs.getString("movie");
+        this.theater = rs.getString("theater");
+
+        
+    }   
+}
+
+class Reservation   {
+    public final int resNbr;
+    public final String toSee, booker;
+
+    Public Reservation(ResultSet rs) throws SQLException  {
+        this.resNbr = rs.getInt("resNbr");
+        this.toSee = rs.getString("to_see");
+        this.booker = rs.getString("booker");
+    }
+}
 
 }
 
