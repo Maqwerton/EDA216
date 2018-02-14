@@ -280,6 +280,14 @@ public class BookingPane extends BasicPane {
             String movieName = nameList.getSelectedValue();
             String date = dateList.getSelectedValue();
             /* --- insert own code here --- */
+            Performance perf = db.getPerformance(movieName, date);
+            if(db.updatePerformance(perf.id))   {
+                db.makeReservation(perf.id, currentUserNameLabel.getText());
+                displayMessage("Booking successful!");
+                System.out.println("HEJEJEJE");
+            } else {
+                displayMessage("No seats available!");
+            }
         }
     }
 }

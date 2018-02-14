@@ -111,7 +111,7 @@ VALUES ("du", "Martins rum", 100, "180103");
 
 INSERT 
 INTO performances(movie, theater, availableSeats, play_date)
-VALUES ("hejsan", "Martins rum", 100, "180102");
+VALUES ("hejsan", "Martins rum", 100, "180103");
 
 INSERT
 INTO reservations(to_see, booker)

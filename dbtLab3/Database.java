@@ -154,6 +154,7 @@ public class Database {
             result = new Performance(rs);
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         } finally {
         }
         return result;
@@ -178,13 +179,13 @@ public class Database {
         return false;
     }
 
-    public void makeReservation(String performance, String username)    {
+    public void makeReservation(int perf_id, String username)    {
         try {
             String sql = 
             "INSERT INTO reservations(to_see, booker)\n"+
             "VALUES (?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, performance);
+            ps.setInt(1, perf_id);
             ps.setString(2, username);
             ps.executeUpdate();
         }   catch(SQLException e)   {
