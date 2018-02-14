@@ -63,13 +63,13 @@ public class Database {
         return conn != null;
     }
 
-    public boolean userExist(String userId) {
+    public boolean userExist(String username) {
 
         try {
             Statement stmt = conn.createStatement();
-            String sql = "SELECT userId\n" +
+            String sql = "SELECT username\n" +
                     "FROM users \n" +
-                    "where username = userId";
+                    "where username = "+username;
             if (stmt.executeQuery(sql) == null) {
                 return false;
             }
@@ -99,11 +99,11 @@ public class Database {
         }
     
     public List<User> getUsers()    {
-        List<Users> found = new LinkedList<>();
+        List<User> found = new LinkedList<>();
         try {
             String sql =
                 "SELECT username\n" +
-                "FROM users"
+                "FROM users";
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery(sql);
             while (rs.next())   {
@@ -116,10 +116,9 @@ public class Database {
         }
         return found;
         }
-    }
 
-    public List<MoviePerformance> getPeformances(String movie) {
-        List<MoviePreformance> found = new LinkedList<>();
+    public List<Performance> getPeformances(String movie) {
+        List<Performance> found = new LinkedList<>();
         try {
             String sql =
                 "SELECT id, theater, movie\n" +
@@ -129,55 +128,90 @@ public class Database {
             ps.setString(1, movie);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                found.add(new MoviePerformance(rs));
+                found.add(new Performance(rs));
             }
             return found;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // code to clone our Statement...
          }
         return found;
     }
+
+    public boolean updatePerformance(int id)   {
+        try {
+            String sql = 
+            "update performances\n"+
+            "set availableSeats = availableSeats-1\n"+
+            "where id=? and availableSeats > 0";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            int n = ps.executeUpdate();
+            if(n != 0) {
+                return true; 
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return false;
+    }
+
+    public void makeReservation(String performance, String username)    {
+        try {
+            String sql = 
+            "INSERT INTO reservations(to_see, booker)\n"+
+            "VALUES (?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, performance);
+            ps.setString(2, username);
+            ps.executeUpdate();
+        }   catch(SQLException e)   {
+            e.printStackTrace();
+        } finally   {
+        }
+    }
+}   
 
 class Movie {
     public final String movieName;
 
     public Movie(ResultSet rs) throws SQLException {
-        this.title = rs.getString("movie_name");
+        this.movieName = rs.getString("movie_name");
     }
+}
 
 class Theater {
     public final String theaterName, address;
     public final int seats;
 
-    Public Theater(ResultSet rs) throws SQLException {
+    public Theater(ResultSet rs) throws SQLException {
         this.theaterName = rs.getString("theater_name");
         this.address = rs.getString("address");
-        this.seats = rs.getString("seats");
+        this.seats = rs.getInt("seats");
     }
 }
 
 class User {
     public final String username, address, phone;
 
-    Public User(ResultSet rs) throws SQLException {
-        this.username = username;
-        this.address = address;
-        this.phone = phone;
+    public User(ResultSet rs) throws SQLException {
+        this.username = rs.getString("username");
+        this.address = rs.getString("address");
+        this.phone = rs.getString("phone");
     }
 }
 
 class Performance   {
     public final int id;
-    public final String location, movie, theater;
+    public final String movie, theater, date, availableSeats;
     
-    Public Performance(ResultSet rs) throws SQLException {
+    public Performance(ResultSet rs) throws SQLException {
         this.id = rs.getInt("id");
-        this.location = rs.getString("location");
         this.movie = rs.getString("movie");
         this.theater = rs.getString("theater");
-
+        this.date = rs.getString("location");
+        this.availableSeats = rs.getString("availableSeats");
         
     }   
 }
@@ -186,13 +220,11 @@ class Reservation   {
     public final int resNbr;
     public final String toSee, booker;
 
-    Public Reservation(ResultSet rs) throws SQLException  {
+    public Reservation(ResultSet rs) throws SQLException  {
         this.resNbr = rs.getInt("resNbr");
         this.toSee = rs.getString("to_see");
         this.booker = rs.getString("booker");
     }
-}
-
 }
 
 
