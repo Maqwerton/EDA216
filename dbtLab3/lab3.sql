@@ -8,9 +8,7 @@ PRAGMA foreign_keys=ON;
 -- Create the tables.
 
 CREATE TABLE users (
-    username      varchar(20) not null PRIMARY KEY,
-    adress        varchar(20) not null,
-    phone         varchar(20) not null
+    username      varchar(20) not null PRIMARY KEY
 );
 
 CREATE TABLE movies (
@@ -44,15 +42,15 @@ CREATE TABLE reservations (
 -- Insert data into the tables.
 INSERT
 INTO users
-VALUES ("Martin", "hejvägen 51", "073057535");
+VALUES ("Martin");
 
 INSERT
 INTO    users
-VALUES ("Robin", "hejvägen 53", "073057535");
+VALUES ("Robin");
 
 INSERT
 INTO    users
-VALUES ("Martin65"," hejvägen 52", "073057535");
+VALUES ("Martin65");
 
 INSERT
 INTO movies

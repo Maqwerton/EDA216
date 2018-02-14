@@ -82,9 +82,9 @@ public class UserLoginPane extends BasicPane {
          *            The event object (not used).
          */
         public void actionPerformed(ActionEvent e) {
-            String userId = fields[USER_ID].getText();
-            if(db.userExist(userId))  {
-                CurrentUser.instance().loginAs(userId);
+            String username = fields[USER_ID].getText();
+            if(db.getUser(username) != null)  {
+                CurrentUser.instance().loginAs(username);
             }
         }
     }

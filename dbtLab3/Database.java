@@ -63,24 +63,9 @@ public class Database {
         return conn != null;
     }
 
-    public boolean userExist(String username) {
-
-        try {
-            Statement stmt = conn.createStatement();
-            String sql = "SELECT username\n" +
-                    "FROM users \n" +
-                    "where username = "+username;
-            if (stmt.executeQuery(sql) == null) {
-                return false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
 
     public List<Movie> getMovies() {
-        List<Movie> found = new LinkedList<>();
+        List<Movie> result = new LinkedList<>();
         try {
             String sql =
                 "SELECT title\n" +
@@ -88,37 +73,38 @@ public class Database {
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
-                found.add(new Movie(rs));
+                result.add(new Movie(rs));
             }
-            return found;
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
         }
-        return found;
+        return result;
         }
     
-    public List<User> getUsers()    {
-        List<User> found = new LinkedList<>();
+    public List<User> getUser(String username)    {
         try {
             String sql =
                 "SELECT username\n" +
-                "FROM users";
-            Statement s = conn.createStatement();
-            ResultSet rs = s.executeQuery(sql);
+                "FROM users\n" +
+                "WHERE username= ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
             while (rs.next())   {
-                found.add(new User(rs));
+                result.add(new User(rs));
             }
-            return found;
+            return ;
         } catch(SQLException e) {
             e.printStackTrace();
         } finally {
         }
-        return found;
+        return null;
         }
 
-    public List<Performance> getPeformances(String movie) {
-        List<Performance> found = new LinkedList<>();
+    public List<Performance> getPerformances(String movie) {
+        List<Performance> result = new LinkedList<>();
         try {
             String sql =
                 "SELECT id, theater, movie\n" +
@@ -128,14 +114,14 @@ public class Database {
             ps.setString(1, movie);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                found.add(new Performance(rs));
+                result.add(new Performance(rs));
             }
-            return found;
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
          }
-        return found;
+        return result;
     }
 
     public boolean updatePerformance(int id)   {
@@ -193,12 +179,10 @@ class Theater {
 }
 
 class User {
-    public final String username, address, phone;
+    public final String username;
 
     public User(ResultSet rs) throws SQLException {
         this.username = rs.getString("username");
-        this.address = rs.getString("address");
-        this.phone = rs.getString("phone");
     }
 }
 

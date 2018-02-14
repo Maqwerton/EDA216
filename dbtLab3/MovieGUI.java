@@ -57,7 +57,7 @@ public class MovieGUI {
                 
         /* --- change code here --- */
         /* --- change xxx to the name of the file with your database --- */
-        if (db.openConnection("movies.sqlt")) {
+        if (db.openConnection("dbtLab3/movies.sqlt")) {
             userLoginPane.displayMessage("Connected to database");
         } else {
             userLoginPane.displayMessage("Could not connect to database");
